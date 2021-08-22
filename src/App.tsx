@@ -1,26 +1,21 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from 'react'
+import './App.css'
+import { Category } from './components/Category'
+import { client, Query } from '@tilework/opus'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+export class App extends React.Component {
+
+  async fetchGraphQL(newQuery: Query<string, unknown, boolean>) {
+    client.setEndpoint('http://localhost:4000/graphql')
+    return await client.post(newQuery)
+  }
+  render() {
+    return (
+      <div>
+        <h2>My first Apollo app 🚀</h2>
+        <Category/>
+      </div>
+    )
+  }
 }
 
-export default App;
