@@ -1,38 +1,139 @@
 .App {
-  text-align: center;
+  padding: 0 100px;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.header {
+  font-family: Raleway, sans-serif;
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  min-height: 78px;
 }
 
-.App-link {
-  color: #61dafb;
+/*==== Navigation ====*/
+
+.nav-category-list {
+  display: flex;
+  font-weight: 600;
+  list-style-type: none;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.nav-category-item {
+  position: relative;
+  height: 20px;
+  margin-left: 32px;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.nav-category-item::after {
+  position: absolute;
+  content: '';
+  top: 47px;
+  left: -15%;
+  width: 130%;
+  height: 2px;
+  background: #5ECE7B;
+  transform: scaleX(0);
+  transition: 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.nav-category-item.active {
+  color: #5ECE7B;
+}
+
+.nav-category-item.active::after {
+  transform: scaleX(1);
+}
+
+/*==== Logo ====*/
+
+.logo-container {
+  position: relative;
+  top: 5px;
+  border-bottom: 28px solid #5ECE7B;
+  border-left: 2px solid transparent;
+  border-right: 2px solid transparent;
+  height: 0;
+  width: 32px;
+}
+
+.logo-square {
+  position: absolute;
+  width: 22px;
+  height: 2px;
+  background-color: #1DCF65;
+  top: -2px;
+  left: 3px;
+}
+.logo-half-circle {
+  position: absolute;
+  top: 12px;
+  left: 25%;
+  width: 14px;
+  height: 9px;
+  border-bottom-left-radius: 9px;
+  border-bottom-right-radius: 9px;
+  border: 1px solid #fafafa;
+  border-top: 0;
+}
+
+.logo-arrow {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  top: 10px;
+  left: 66%;
+  transform: rotate(-45deg);
+}
+
+.logo-arrow::before {
+   display: block;
+   content: '';
+   width: 100%;
+   height: 100%;
+   border-width: 1px 1px 0 0;
+   border-style: solid;
+   border-color: #fafafa;
+ }
+
+/*==== Header Actions ====*/
+
+.actions-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 65px;
+}
+
+.actions-currency-switcher {
+  position: relative;
+}
+
+.actions-currency-value {
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 29px;
+}
+
+.actions-currency-arrow {
+  position: absolute;
+  width: 5px;
+  height: 5px;
+  top: 13px;
+  left: 22px;
+  transform: rotate(135deg);
+}
+
+.actions-currency-arrow::after {
+  display: block;
+  content: '';
+  width: 100%;
+  height: 100%;
+  border-width: 1px 1px 0 0;
+  border-style: solid;
+}
+
+.actions-cart {
+  padding-top: 5px;
 }
