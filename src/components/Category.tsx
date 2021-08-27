@@ -1,14 +1,15 @@
 import React from 'react'
-import { ICategories } from '../ts/interfaces/interfaces'
 
-
-export class Category extends React.Component<ICategories> {
-  
+export class Category extends React.Component<PropsCategory> {
   render() {
+    const {categories, current} = this.props
+    console.log(this.props)
     return (
       <div className={'category-container'}>
-        {/*<h2>{this.props.categories.}</h2>*/}
-        {/*{this.props.categories && categories.map((v: any) => <div>{v.name}</div>)}*/}
+        <h2 className={'category-title'}>{categories[current].name}</h2>
+        <div className={'category-products'}>
+          {categories[current].products.map((v: IProduct) => <div>{v.name}</div>)}
+        </div>
       </div>
     )
   }

@@ -1,54 +1,32 @@
 import React from 'react'
 import './App.css'
-import { Category } from './components/Category'
-import { client, Query } from '@tilework/opus'
-import { ICategories, ICategory } from './ts/interfaces/interfaces'
 import cartIcon from './icons/cart_icon.png'
+import { getCategoriesTC, setCurrentCategory } from './store/actionCreators'
+import { connect } from 'react-redux'
+import { Category } from './components/Category'
 
-export class App extends React.Component {
-  state: ICategories
-  
-  constructor() {
-    super({})
-    this.state = {
-      categories: [],
-    }
-  }
-  
-  async fetchGraphQL(newQuery: Query<string, unknown, boolean>): Promise<any> {
-    client.setEndpoint('http://localhost:4000/graphql')
-    return await client.post(newQuery)
+class App extends React.PureComponent<AppPropsType> {
+  handleNav(idx: number) {
+    this.props.setCurrentCategory(idx)
   }
   
   componentDidMount() {
-    //fetching categories names
-    const categories = this.fetchGraphQL(new Query('categories {\n' +
-      '    name\n' +
-      '    products {\n' +
-      '      id\n' +
-      '      name\n' +
-      '      inStock\n' +
-      '      category\n' +
-      '      brand\n' +
-      '    }\n' +
-      '  }', true))
-    categories.then(res => {
-      this.setState({categories: [...res.categories]})
-      // console.log('state: ', this.state)
-    })
+    this.props.getCategoriesTC()
   }
   
   render() {
+    const {categories,currentCategory} = this.props
     return (
       <div className={'App'}>
         <header className={'header'}>
           {/*==== Navigation ====*/}
           <nav className={'header-nav'}>
             <ul className={'nav-category-list'}>
-              {this.state.categories.map((v: ICategory) =>
+              {categories.map((v: ICategory, i: number) =>
                 <li
-                  key={v.name || '' + Date.now()}
-                  className={`nav-category-item ${v.name === 'tech' ? 'active' : null}`}
+                  key={`${v}${i}`}
+                  className={`nav-category-item ${i === currentCategory ? 'active' : null}`}
+                  onClick={() => this.handleNav(i)}
                 >
                   {v.name}
                 </li>)
@@ -73,10 +51,36 @@ export class App extends React.Component {
           </div>
         </header>
         <main>
-          <Category categories={this.state.categories}/>
+          <Category categories={categories} current={currentCategory}/>
         </main>
       </div>
     )
   }
 }
 
+type MapStateToPropsType = {
+  // initialized: boolean
+  categories: ICategory[]
+  currentCategory: number
+}
+
+type MapDispatchToPropsType = {
+  // initializeApp: () => void
+  getCategoriesTC: () => void
+  setCurrentCategory: (current: number) => void
+}
+type AppPropsType = MapStateToPropsType & MapDispatchToPropsType
+
+const mapStateToProps = (state: AppStateType): MapStateToPropsType => ({
+  // initialized: getInitialized(state),
+  categories: state.categories,
+  currentCategory: state.currentCategory
+})
+
+export default connect<MapStateToPropsType, MapDispatchToPropsType, {}, AppStateType>(
+  mapStateToProps,
+  {
+    // initializeApp,
+    getCategoriesTC,
+    setCurrentCategory
+  })(App)
