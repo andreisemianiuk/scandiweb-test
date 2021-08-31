@@ -3,6 +3,9 @@ type AppStateType = {
   isFetching: boolean
   categories: ICategory[]
   currentCategory: number
+  currentPrice: string
+  isOpenCurrencies: boolean
+  currentProductID: string | null
 }
 
 interface ICategory {
@@ -13,6 +16,22 @@ interface ICategory {
 type PropsCategory = {
   categories: ICategory[]
   current: number
+  price: string
+  currentID: string | null
+  setCurrentID: (id: string) => void
+}
+
+type ProductPagePropsType = {
+  price: string
+  product: IProduct | undefined
+}
+
+type CurrencyMarksType = {
+  ['USD']: string
+  ['GBR']: string
+  ['AUD']: string
+  ['JPY']: string
+  ['RUB']: string
 }
 
 interface IProduct {

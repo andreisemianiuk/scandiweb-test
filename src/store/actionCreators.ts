@@ -31,10 +31,31 @@ export const setCurrentCategory = (current: number) => {
   } as const
 }
 
+export const setCurrentPrice = (price: string) => {
+  return {
+    type: actionTypes.SET_CURRENT_PRICE,
+    price,
+  } as const
+}
+
+export const setCurrentProductID = (id: string) => {
+  return {
+    type: actionTypes.SET_CURRENT_PRODUCT_ID,
+    id,
+  } as const
+}
+
+export const setIsOpenCurrencies = (isOpen: boolean) => {
+  return {
+    type: actionTypes.SET_IS_OPEN_CURRENCIES,
+    isOpen,
+  } as const
+}
+
 // Thunk Creators
 
-// export const getInitData = (): RootThunkType => () => {
-//
+// export const getCurrID = (id:string) => (dispatch: Dispatch<AppActionTypes>) => {debugger
+//   dispatch(setCurrentProductID(id))
 // }
 
 export const getCategoriesTC = () => (dispatch: Dispatch<AppActionTypes>) => {
@@ -46,9 +67,24 @@ export const getCategoriesTC = () => (dispatch: Dispatch<AppActionTypes>) => {
     '      inStock\n' +
     '      category\n' +
     '      brand\n' +
+    '      gallery\n' +
+    '      description\n' +
+    '      attributes {\n' +
+    '        id\n' +
+    '        name\n' +
+    '        type\n' +
+    '        items {\n' +
+    '          id\n' +
+    '          displayValue\n' +
+    '          value\n' +
+    '        }\n' +
+    '      }\n' +
+    '      prices {\n' +
+    '        currency\n' +
+    '        amount\n' +
+    '      }\n' +
     '    }\n' +
     '  }', true))
-  console.log(data)
-  data.then(res =>
-    dispatch(setCategories(res.categories)))
+  
+  data.then(res => dispatch(setCategories(res.categories)))
 }

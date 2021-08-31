@@ -5,7 +5,10 @@ const initialState: AppStateType = {
   initialized: false,
   isFetching: false,
   categories: [],
-  currentCategory: 0
+  currentCategory: 0,
+  currentPrice: 'USD',
+  isOpenCurrencies: false,
+  currentProductID: null
 }
 
 export const appReducer = (state: AppStateType = initialState, action: AppActionTypes): AppStateType => {
@@ -27,10 +30,25 @@ export const appReducer = (state: AppStateType = initialState, action: AppAction
         ...state,
         categories: action.categories,
       }
-      case actionTypes.SET_CURRENT_CATEGORY:
+    case actionTypes.SET_CURRENT_CATEGORY:
       return {
         ...state,
         currentCategory: action.current,
+      }
+    case actionTypes.SET_CURRENT_PRICE:
+      return {
+        ...state,
+        currentPrice: action.price,
+      }
+    case actionTypes.SET_IS_OPEN_CURRENCIES:
+      return {
+        ...state,
+        isOpenCurrencies: action.isOpen,
+      }
+    case actionTypes.SET_CURRENT_PRODUCT_ID:
+      return {
+        ...state,
+        currentProductID: action.id,
       }
     default:
       return state
