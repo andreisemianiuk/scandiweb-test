@@ -8,7 +8,9 @@ const initialState: AppStateType = {
   currentCategory: 0,
   currentPrice: 'USD',
   isOpenCurrencies: false,
-  currentProductID: null
+  attributes: [],
+  currentProductID: null,
+  productCart: []
 }
 
 export const appReducer = (state: AppStateType = initialState, action: AppActionTypes): AppStateType => {
@@ -49,6 +51,27 @@ export const appReducer = (state: AppStateType = initialState, action: AppAction
       return {
         ...state,
         currentProductID: action.id,
+      }
+    case actionTypes.CLEAR_ATTRIBUTES:
+      return {
+        ...state,
+        attributes: []
+      }
+    case actionTypes.SET_ATTRIBUTE:
+      if (state.attributes.find(v => v.id === action.attribute.id)) {
+        return {
+          ...state,
+          attributes:  state.attributes.map(val => val.id === action.attribute.id ? action.attribute : val),
+        }
+      }
+      return {
+        ...state,
+        attributes:  [...state.attributes,action.attribute],
+      }
+    case actionTypes.ADD_PRODUCT_IN_CART:
+      return {
+        ...state,
+        productCart:  [...state.productCart,action.product],
       }
     default:
       return state

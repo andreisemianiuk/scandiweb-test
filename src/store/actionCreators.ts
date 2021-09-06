@@ -52,6 +52,26 @@ export const setIsOpenCurrencies = (isOpen: boolean) => {
   } as const
 }
 
+export const setAttribute = (attribute: IAttributeSet ) => {
+  return {
+    type: actionTypes.SET_ATTRIBUTE,
+    attribute,
+  } as const
+}
+
+export const clearAttributes = ()  => {
+  return {
+    type: actionTypes.CLEAR_ATTRIBUTES,
+  } as const
+}
+
+export const addProductInCart = (product: IProductInCart)  => {
+  return {
+    type: actionTypes.ADD_PRODUCT_IN_CART,
+    product
+  } as const
+}
+
 // Thunk Creators
 
 // export const getCurrID = (id:string) => (dispatch: Dispatch<AppActionTypes>) => {debugger

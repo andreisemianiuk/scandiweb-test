@@ -1,9 +1,12 @@
 import React from 'react'
 import './App.css'
-import { NavLink, Redirect, Route, Switch } from 'react-router-dom'
+import { NavLink, Redirect, Route, RouteComponentProps, Switch, withRouter } from 'react-router-dom'
 import cartIcon from './icons/cart_icon.png'
 import {
+  addProductInCart,
+  clearAttributes,
   getCategoriesTC,
+  setAttribute,
   setCurrentCategory,
   setCurrentPrice,
   setCurrentProductID,
@@ -14,9 +17,9 @@ import { Category } from './components/Category'
 import { currencyConverter, currencyMarks } from './common/currency-marks/currencyMarks'
 import { ProductPage } from './components/ProductPage'
 import { Error404 } from './components/Error404'
-import { Cart } from './components/Cart'
+import { CartPage } from './components/CartPage'
 
-class App extends React.Component<AppPropsType> {
+class App extends React.Component<AppPropsType & RouteComponentProps<any, any, unknown>> {
   handleNav(idx: number) {
     this.props.setCurrentCategory(idx)
   }
@@ -34,7 +37,12 @@ class App extends React.Component<AppPropsType> {
   }
   
   render() {
-    const {categories, currentCategory,currentPrice,isOpenCurrencies,setCurrentProductID,currentProductID} = this.props
+    const {
+      categories, currentCategory,currentPrice,
+      isOpenCurrencies,setCurrentProductID,
+      currentProductID,attributes,setAttribute,
+      clearAttributes,addProductInCart
+    } = this.props
     return (
       <div className={'App'}>
         <header className={'header'}>
@@ -81,8 +89,9 @@ class App extends React.Component<AppPropsType> {
                 }
               </div>
             </div>
-            <span>
-              <img className={'actions-cart'} src={cartIcon} alt=""/>
+            <span className={'actions-cart'} onClick={() => this.props.history.push('/cart')}>
+              <img className={'actions-cart-image'} src={cartIcon} alt=""/>
+              {this.props.productCart.length ? <span className={'actions-cart-count-icon'}>{this.props.productCart.length}</span> : null}
             </span>
           </div>
         </header>
@@ -95,7 +104,6 @@ class App extends React.Component<AppPropsType> {
                 current={currentCategory}
                 price={currentPrice}
                 setCurrentID={setCurrentProductID}
-                currentID={currentProductID}
               />}
             />
             <Route
@@ -104,13 +112,15 @@ class App extends React.Component<AppPropsType> {
                 <ProductPage
                   product={categories[currentCategory]?.products.find((v:IProduct) => v.id === currentProductID)}
                   price={currentPrice}
+                  attributes={attributes}
+                  setAttr={setAttribute}
+                  clearAttr={clearAttributes}
+                  addProduct={addProductInCart}
                 />}
             />
-            <Route path={`/cart`} render={() => <Cart/>}/>
+            <Route path={`/cart`} render={() => <CartPage/>}/>
             <Route render={() => <Error404 />}/>
           </Switch>
-          
-          {/*<ProductPage/>*/}
         </main>
       </div>
     )
@@ -122,7 +132,9 @@ type MapStateToPropsType = {
   categories: ICategory[]
   currentCategory: number
   currentPrice: string
+  attributes: IAttribute[]
   isOpenCurrencies: boolean
+  productCart: IProductInCart[]
   currentProductID: string | null
 }
 
@@ -132,7 +144,10 @@ type MapDispatchToPropsType = {
   setCurrentCategory: (current: number) => void
   setCurrentPrice: (price: string) => void
   setIsOpenCurrencies: (isOpen: boolean) => void
+  setAttribute: (attribute: IAttributeSet) => void
+  clearAttributes: () => void
   setCurrentProductID: (id: string) => void
+  addProductInCart: (product: IProductInCart) => void
 }
 type AppPropsType = MapStateToPropsType & MapDispatchToPropsType
 
@@ -141,11 +156,13 @@ const mapStateToProps = (state: AppStateType): MapStateToPropsType => ({
   categories: state.categories,
   currentCategory: state.currentCategory,
   currentPrice: state.currentPrice,
+  attributes: state.attributes,
   isOpenCurrencies: state.isOpenCurrencies,
-  currentProductID: state.currentProductID
+  currentProductID: state.currentProductID,
+  productCart: state.productCart,
 })
 
-export default connect<MapStateToPropsType, MapDispatchToPropsType, {}, AppStateType>(
+export default withRouter(connect<MapStateToPropsType, MapDispatchToPropsType, {}, AppStateType>(
   mapStateToProps,
   {
     // initializeApp,
@@ -154,4 +171,7 @@ export default connect<MapStateToPropsType, MapDispatchToPropsType, {}, AppState
     setCurrentPrice,
     setIsOpenCurrencies,
     setCurrentProductID,
-  })(App)
+    setAttribute,
+    clearAttributes,
+    addProductInCart
+  })(App)) as any

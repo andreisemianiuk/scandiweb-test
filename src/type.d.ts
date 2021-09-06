@@ -4,8 +4,19 @@ type AppStateType = {
   categories: ICategory[]
   currentCategory: number
   currentPrice: string
+  attributes: IAttributeSet[] | []
   isOpenCurrencies: boolean
   currentProductID: string | null
+  productCart: IProductInCart[]
+}
+
+interface IProductInCart {
+  name: string
+  brand: string
+  gallery: string[]
+  prices: IPrice[]
+  attributes: IAttributeSet[]
+  count: number
 }
 
 interface ICategory {
@@ -17,13 +28,16 @@ type PropsCategory = {
   categories: ICategory[]
   current: number
   price: string
-  currentID: string | null
   setCurrentID: (id: string) => void
 }
 
 type ProductPagePropsType = {
   price: string
   product: IProduct | undefined
+  attributes: IAttributeSet[]
+  setAttr: (attribute: IAttributeSet) => void
+  clearAttr: () => void
+  addProduct: (product: IProductInCart) => void
 }
 
 type CurrencyMarksType = {
@@ -41,7 +55,7 @@ interface IProduct {
   gallery?: string[]
   description: string
   category: string
-  attributes?: IAttributeSet[]
+  attributes: IAttributeSet[]
   prices: IPrice[]
   brand: string
 }

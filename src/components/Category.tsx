@@ -11,7 +11,7 @@ export class Category extends React.PureComponent<PropsCategory> {
         <h2 className={'category-title'}>{categories.length && categories[current].name}</h2>
         <div className={'category-products'}>
           {categories.length && categories[current].products.map((v: IProduct) =>
-            (<NavLink to={`product_description`}  onClick={() => setCurrentID(v.id)}>
+            (<NavLink to={`product_description`} className={'product-description-link'} onClick={() => setCurrentID(v.id)}>
               <div className={'category-product-card'}>
                 <div className={`card-image-wrapper`}>
                   {!v.inStock && <span className={'card-stock-state'}>out of stock</span>}
