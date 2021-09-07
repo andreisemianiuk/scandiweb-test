@@ -6,11 +6,8 @@ export class ProductPage extends React.Component<ProductPagePropsType> {
     currentImageIndex: number
   }
   
-  constructor() {
-    super({
-      product: undefined, price: 'USD', attributes: [], setAttr: () => {
-      },clearAttr: () => {},addProduct: () => {}
-    })
+  constructor(props: ProductPagePropsType) {
+    super(props)
     this.state = {
       currentImageIndex: 0,
     }
@@ -29,10 +26,11 @@ export class ProductPage extends React.Component<ProductPagePropsType> {
     const product: IProductInCart = {
       name: this.props.product?.name || '',
       brand: this.props.product?.brand || '',
+      category: this.props.product?.category || '',
       gallery: this.props.product?.gallery || [],
       prices: this.props.product?.prices || [],
       attributes: this.props.attributes,
-      count: 1
+      count: 1,
     }
     
     this.props.addProduct(product)
@@ -79,10 +77,7 @@ export class ProductPage extends React.Component<ProductPagePropsType> {
                             className={`attribute-item ${this.props.attributes
                               .find(it => it.id === v.id)?.items
                               ?.find(itm => itm.id === val.id) ? 'active-swatch' : null}`}
-                            style={{
-                              backgroundColor: `${val.value}`,
-                              color: `${val.displayValue === 'Black' ? 'white' : 'inherit'}`,
-                            }}
+                            style={{backgroundColor: `${val.value}`}}
                       />)
                     : v.items?.map(val =>
                       <span

@@ -13,6 +13,7 @@ type AppStateType = {
 interface IProductInCart {
   name: string
   brand: string
+  category: string
   gallery: string[]
   prices: IPrice[]
   attributes: IAttributeSet[]
@@ -40,9 +41,16 @@ type ProductPagePropsType = {
   addProduct: (product: IProductInCart) => void
 }
 
+type CartModalPropsType = {
+  products: IProductInCart[]
+  price: string
+  categories: ICategory[]
+  currentCategory: number
+}
+
 type CurrencyMarksType = {
   ['USD']: string
-  ['GBR']: string
+  ['GBP']: string
   ['AUD']: string
   ['JPY']: string
   ['RUB']: string

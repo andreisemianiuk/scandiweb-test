@@ -18,8 +18,19 @@ import { currencyConverter, currencyMarks } from './common/currency-marks/curren
 import { ProductPage } from './components/ProductPage'
 import { Error404 } from './components/Error404'
 import { CartPage } from './components/CartPage'
+import { Modal } from './components/Modal/Modal'
+import { CartModal } from './components/CartModal/CartModal'
 
 class App extends React.Component<AppPropsType & RouteComponentProps<any, any, unknown>> {
+  state: {
+    isShow: boolean
+  }
+  
+  constructor(props: AppPropsType & RouteComponentProps<any, any, unknown>) {
+    super(props)
+    this.state = {isShow: false}
+  }
+  
   handleNav(idx: number) {
     this.props.setCurrentCategory(idx)
   }
@@ -41,10 +52,15 @@ class App extends React.Component<AppPropsType & RouteComponentProps<any, any, u
       categories, currentCategory,currentPrice,
       isOpenCurrencies,setCurrentProductID,
       currentProductID,attributes,setAttribute,
-      clearAttributes,addProductInCart
+      clearAttributes,addProductInCart,productCart
     } = this.props
     return (
       <div className={'App'}>
+        {/*==== Modal ====*/}
+        {this.state.isShow && <Modal>
+          <CartModal products={productCart} price={currentPrice} categories={categories} currentCategory={currentCategory}/>
+        </Modal>}
+        {/*==== /Modal ====*/}
         <header className={'header'}>
           {/*==== Navigation ====*/}
           <nav className={'header-nav'}>
@@ -89,7 +105,7 @@ class App extends React.Component<AppPropsType & RouteComponentProps<any, any, u
                 }
               </div>
             </div>
-            <span className={'actions-cart'} onClick={() => this.props.history.push('/cart')}>
+            <span className={'actions-cart'} onClick={() => this.setState({isShow: !this.state.isShow})}>
               <img className={'actions-cart-image'} src={cartIcon} alt=""/>
               {this.props.productCart.length ? <span className={'actions-cart-count-icon'}>{this.props.productCart.length}</span> : null}
             </span>
@@ -174,4 +190,4 @@ export default withRouter(connect<MapStateToPropsType, MapDispatchToPropsType, {
     setAttribute,
     clearAttributes,
     addProductInCart
-  })(App)) as any
+  })(App))
