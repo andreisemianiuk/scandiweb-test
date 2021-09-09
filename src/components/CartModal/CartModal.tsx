@@ -3,26 +3,55 @@ import styles from './CartModal.module.css'
 import { currencyConverter } from '../../common/currency-marks/currencyMarks'
 
 export class CartModal extends React.Component<CartModalPropsType> {
+  private readonly wrapperRef: React.RefObject<any>
+  state: {
+    total: number
+  }
+  constructor(props: CartModalPropsType) {
+    super(props)
+    
+    this.state = {total: 0}
+    this.wrapperRef= React.createRef()
+  }
   
-  // func = () =>{debugger
-  //   this.props.products.forEach(item => {
-  //     this.props.categories.find(val => val.name === item.category)
-  //       ?.products.find(pr => pr.name === item.name)
-  //       ?.attributes.map(v => (<div className={styles.attribute}>
-  //       {v.type === 'swatch'
-  //         ? v.items?.map(it => (<span style={{backgroundColor: `${it.value}`}}/>))
-  //         : v.items?.map(it => <span>{it.displayValue}</span>)}
-  //     </div>))
-  //   })
-  //
-  // }
+  componentDidMount() {
+    document.addEventListener('mousedown', this.handleClickOutside)
+    this.setState({total: this.totalSum})
+  }
+  
+  componentWillUnmount() {
+    document.removeEventListener('mousedown', this.handleClickOutside);
+  }
+  
+  componentDidUpdate(prevProps: Readonly<CartModalPropsType>, prevState: Readonly<{total: number}>, snapshot?: any) {
+    if (prevState.total !== this.state.total) this.setState({total: this.totalSum})
+  }
+  
+  handleClickOutside= (event: MouseEvent) =>{
+    if (this.wrapperRef
+      && !this.wrapperRef.current.contains(event.target)
+      && !this.props.node.current.contains(event.target)) {
+      this.props.handleModal()
+    }
+  }
+  
+  increaseCount = (i: number) => {
+    this.props.incCount(i)
+  }
+  
+  decreaseCount = (i: number,count: number) => {
+    if (count > 1) this.props.decCount(i)
+  }
+  
+  totalSum = this.props.products
+    .map(v => (v.prices.find(val => val.currency === this.props.price)?.amount || 0) * v.count)
+    .reduce((acc,it) => (acc || 0) + (it || 0),0)
   
   render() {
-    // this.func()
     const {products, price, categories} = this.props
     
     return (
-      <div className={styles.container}>
+      <div className={styles.container} ref={this.wrapperRef}>
         <h4 className={styles.title}>My Bag
           <span className={styles.titleSpan}>
                 {`, ${products.length} item${products.length === 1 ? '' : 's'}`}
@@ -45,24 +74,22 @@ export class CartModal extends React.Component<CartModalPropsType> {
                     </div>
                     {v.type === 'swatch'
                       ? v.items?.map(it =>
-                        (<div className={`${styles.attributeItem} ${products.find(tm =>
-                          tm.category === item.category)?.attributes?.find(p =>
-                          p.name === v.name)?.items?.find(iz => iz.id === it.id) ? styles.active : null}`}
+                        (<div className={`${styles.attributeItem} ${products[index]?.attributes?.find(p =>
+                          p.name === v.name)?.items?.find(iz => iz.value === it.value) ? styles.active : null}`}
                               style={{backgroundColor: `${it.value}`}}/>))
                       : v.items?.map(it =>
-                        (<div className={`${styles.attributeItem} ${products.find(tm =>
-                          tm.category === item.category)?.attributes?.find(p =>
-                          p.name === v.name)?.items?.find(iz => iz.id === it.id) ? styles.active : null}`}>
-                          {it.displayValue}
+                        (<div className={`${styles.attributeItem} ${products[index]?.attributes?.find(p =>
+                          p.name === v.name)?.items?.find(iz => iz.value === it.value) ? styles.active : null}`}>
+                          {it.value}
                         </div>))}
                   </div>))}
               </div>
             </div>
             <div className={styles.gallery}>
-              <div className={styles.buttons}>
-                <div className={styles.btn}>+</div>
+              <div className={styles.countButtons}>
+                <button className={styles.countBtn} onClick={() =>this.increaseCount(index)}>+</button>
                 <div className={styles.count}>{item.count}</div>
-                <div className={styles.btn}>-</div>
+                <button className={styles.countBtn} onClick={() => this.decreaseCount(index,item.count)}>-</button>
               </div>
               <div className={styles.imageWrapper}>
                 <img className={styles.image} src={item.gallery[0]} alt={''}/>
@@ -70,6 +97,12 @@ export class CartModal extends React.Component<CartModalPropsType> {
             </div>
           </div>),
         )}
+        <div className={styles.totalSum}>
+          <span className={styles.totalTitle}>Total</span>
+          <span className={styles.totalPrice}>
+            {this.state.total}
+          </span>
+        </div>
       </div>
     )
   }

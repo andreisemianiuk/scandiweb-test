@@ -10,7 +10,7 @@ const initialState: AppStateType = {
   isOpenCurrencies: false,
   attributes: [],
   currentProductID: null,
-  productCart: []
+  productCart: [],
 }
 
 export const appReducer = (state: AppStateType = initialState, action: AppActionTypes): AppStateType => {
@@ -55,23 +55,39 @@ export const appReducer = (state: AppStateType = initialState, action: AppAction
     case actionTypes.CLEAR_ATTRIBUTES:
       return {
         ...state,
-        attributes: []
+        attributes: [],
       }
     case actionTypes.SET_ATTRIBUTE:
       if (state.attributes.find(v => v.id === action.attribute.id)) {
         return {
           ...state,
-          attributes:  state.attributes.map(val => val.id === action.attribute.id ? action.attribute : val),
+          attributes: state.attributes.map(val => val.id === action.attribute.id ? action.attribute : val),
         }
       }
       return {
         ...state,
-        attributes:  [...state.attributes,action.attribute],
+        attributes: [...state.attributes, action.attribute],
       }
     case actionTypes.ADD_PRODUCT_IN_CART:
       return {
         ...state,
-        productCart:  [...state.productCart,action.product],
+        productCart: [...state.productCart, action.product],
+      }
+    case actionTypes.INC_PRODUCT_COUNT:
+      return {
+        ...state,
+        productCart: state.productCart
+          .map((v, i) => i === action.i
+            ? {...v, count: ++v.count}
+            : v),
+      }
+    case actionTypes.DEC_PRODUCT_COUNT:
+      return {
+        ...state,
+        productCart: state.productCart
+          .map((v, i) => i === action.i
+            ? {...v, count: --v.count}
+            : v),
       }
     default:
       return state

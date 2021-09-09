@@ -4,12 +4,14 @@ import { currencyConverter } from '../common/currency-marks/currencyMarks'
 export class ProductPage extends React.Component<ProductPagePropsType> {
   state: {
     currentImageIndex: number
+    buttonColor: string
   }
   
   constructor(props: ProductPagePropsType) {
     super(props)
     this.state = {
       currentImageIndex: 0,
+      buttonColor: 'inherit',
     }
   }
   
@@ -18,23 +20,39 @@ export class ProductPage extends React.Component<ProductPagePropsType> {
   }
   
   addProductHandler = () => {
-    if (this.props.attributes.length < (this.props.product?.attributes?.length || 0)) {
+    const {product, attributes, productCart} = this.props
+    if (attributes.length < (product?.attributes?.length || 0)) {
       alert('Please choose all attributes!')
       return
     }
     
-    const product: IProductInCart = {
-      name: this.props.product?.name || '',
-      brand: this.props.product?.brand || '',
-      category: this.props.product?.category || '',
-      gallery: this.props.product?.gallery || [],
-      prices: this.props.product?.prices || [],
-      attributes: this.props.attributes,
+    const newProduct: IProductInCart = {
+      name: product?.name || '',
+      brand: product?.brand || '',
+      category: product?.category || '',
+      gallery: product?.gallery || [],
+      prices: product?.prices || [],
+      attributes,
       count: 1,
     }
     
-    this.props.addProduct(product)
-    console.log('product added')
+    // the res variable contains a check for duplicates in the grocery cart
+    const res = productCart.filter(v => v.name === newProduct.name)
+      .find(o => o.attributes
+        .every((p, pi) => p.items
+          ?.every((n, ni) => {
+            // @ts-ignore
+            return n.displayValue === newProduct.attributes[pi].items[ni].displayValue
+          })))
+    
+    const attributesValues = newProduct.attributes.map(at => at.items?.map(v => v.displayValue))
+    
+    if (!res) {
+      this.props.addProduct(newProduct)
+      alert(`${newProduct.name} ${attributesValues} added`)
+    } else {
+      alert(`This ${newProduct.name} ${attributesValues} has been already added to the cart`)
+    }
   }
   
   chooseAttribute = (ID: string, id: string) => {

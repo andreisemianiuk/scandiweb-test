@@ -5,7 +5,9 @@ import cartIcon from './icons/cart_icon.png'
 import {
   addProductInCart,
   clearAttributes,
+  decreaseProductCount,
   getCategoriesTC,
+  increaseProductCount,
   setAttribute,
   setCurrentCategory,
   setCurrentPrice,
@@ -23,16 +25,23 @@ import { CartModal } from './components/CartModal/CartModal'
 
 class App extends React.Component<AppPropsType & RouteComponentProps<any, any, unknown>> {
   state: {
-    isShow: boolean
+    showModal: boolean
   }
+  private readonly cartRef: React.RefObject<HTMLSpanElement>
   
   constructor(props: AppPropsType & RouteComponentProps<any, any, unknown>) {
     super(props)
-    this.state = {isShow: false}
+    
+    this.cartRef = React.createRef()
+    this.state = {showModal: false}
   }
   
   handleNav(idx: number) {
     this.props.setCurrentCategory(idx)
+  }
+  
+  handleClickModal = () => {
+    this.setState({showModal: !this.state.showModal})
   }
   
   openCurrencies = () => {
@@ -49,16 +58,25 @@ class App extends React.Component<AppPropsType & RouteComponentProps<any, any, u
   
   render() {
     const {
-      categories, currentCategory,currentPrice,
-      isOpenCurrencies,setCurrentProductID,
-      currentProductID,attributes,setAttribute,
-      clearAttributes,addProductInCart,productCart
+      categories, currentCategory, currentPrice,
+      isOpenCurrencies, setCurrentProductID,
+      currentProductID, attributes, setAttribute,
+      clearAttributes, addProductInCart, productCart,
+      increaseProductCount,decreaseProductCount
     } = this.props
     return (
       <div className={'App'}>
         {/*==== Modal ====*/}
-        {this.state.isShow && <Modal>
-          <CartModal products={productCart} price={currentPrice} categories={categories} currentCategory={currentCategory}/>
+        {this.state.showModal && <Modal>
+          <CartModal products={productCart}
+                     price={currentPrice}
+                     categories={categories}
+                     currentCategory={currentCategory}
+                     incCount={increaseProductCount}
+                     decCount={decreaseProductCount}
+                     handleModal={this.handleClickModal}
+                     node={this.cartRef}
+          />
         </Modal>}
         {/*==== /Modal ====*/}
         <header className={'header'}>
@@ -105,9 +123,10 @@ class App extends React.Component<AppPropsType & RouteComponentProps<any, any, u
                 }
               </div>
             </div>
-            <span className={'actions-cart'} onClick={() => this.setState({isShow: !this.state.isShow})}>
+            <span className={'actions-cart'} onClick={this.handleClickModal} ref={this.cartRef}>
               <img className={'actions-cart-image'} src={cartIcon} alt=""/>
-              {this.props.productCart.length ? <span className={'actions-cart-count-icon'}>{this.props.productCart.length}</span> : null}
+              {this.props.productCart.length ?
+                <span className={'actions-cart-count-icon'}>{this.props.productCart.length}</span> : null}
             </span>
           </div>
         </header>
@@ -126,7 +145,8 @@ class App extends React.Component<AppPropsType & RouteComponentProps<any, any, u
               path={`/product_description`}
               render={() =>
                 <ProductPage
-                  product={categories[currentCategory]?.products.find((v:IProduct) => v.id === currentProductID)}
+                  product={categories[currentCategory]?.products.find((v: IProduct) => v.id === currentProductID)}
+                  productCart={productCart}
                   price={currentPrice}
                   attributes={attributes}
                   setAttr={setAttribute}
@@ -135,7 +155,7 @@ class App extends React.Component<AppPropsType & RouteComponentProps<any, any, u
                 />}
             />
             <Route path={`/cart`} render={() => <CartPage/>}/>
-            <Route render={() => <Error404 />}/>
+            <Route render={() => <Error404/>}/>
           </Switch>
         </main>
       </div>
@@ -164,6 +184,8 @@ type MapDispatchToPropsType = {
   clearAttributes: () => void
   setCurrentProductID: (id: string) => void
   addProductInCart: (product: IProductInCart) => void
+  increaseProductCount: (i: number) => void
+  decreaseProductCount: (i: number) => void
 }
 type AppPropsType = MapStateToPropsType & MapDispatchToPropsType
 
@@ -189,5 +211,7 @@ export default withRouter(connect<MapStateToPropsType, MapDispatchToPropsType, {
     setCurrentProductID,
     setAttribute,
     clearAttributes,
-    addProductInCart
+    addProductInCart,
+    increaseProductCount,
+    decreaseProductCount,
   })(App))

@@ -77,7 +77,7 @@
 	margin-left: 20px;
 }
 
-.buttons {
+.countButtons {
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
@@ -87,15 +87,18 @@
 	margin-right: 10px;
 }
 
-.btn {
+.countBtn {
 	width: 25px;
 	height: 25px;
 	border: 1px solid #1D1F22;
 	font-size: 22px;
 	font-weight: bold;
-	text-align: center;
 	color: gray;
-	line-height: 20px;
+	cursor: pointer;
+}
+
+.countBtn:hover {
+	outline: 1px solid black;
 }
 
 .count {
@@ -110,4 +113,15 @@
 .image {
 	height: 137px;
 	width: 105px;
+}
+
+.totalSum {
+	display: flex;
+	justify-content: space-between;
+
+	/*width: 100%;*/
+}
+
+.totalTitle {
+	font-family: 'Roboto','sans-serif';
 }

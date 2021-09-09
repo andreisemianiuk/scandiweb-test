@@ -1,6 +1,8 @@
 import {
   addProductInCart,
   clearAttributes,
+  decreaseProductCount,
+  increaseProductCount,
   setAttribute,
   setCategories,
   setCurrentCategory,
@@ -21,6 +23,8 @@ export const SET_ATTRIBUTE = 'SET_ATTRIBUTE'
 export const CLEAR_ATTRIBUTES = 'CLEAR_ATTRIBUTES'
 export const SET_CURRENT_PRODUCT_ID = 'SET_CURRENT_PRODUCT_ID'
 export const ADD_PRODUCT_IN_CART = 'ADD_PRODUCT_IN_CART'
+export const INC_PRODUCT_COUNT = 'INC_PRODUCT_IN_CART'
+export const DEC_PRODUCT_COUNT = 'DEC_PRODUCT_COUNT'
 
 export type AppActionTypes = ReturnType<typeof setInitializedSuccess
   | typeof setIsFetching
@@ -31,4 +35,6 @@ export type AppActionTypes = ReturnType<typeof setInitializedSuccess
   | typeof setAttribute
   | typeof clearAttributes
   | typeof addProductInCart
+  | typeof increaseProductCount
+  | typeof decreaseProductCount
   | typeof setCurrentProductID>

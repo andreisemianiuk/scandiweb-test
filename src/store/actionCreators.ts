@@ -72,6 +72,20 @@ export const addProductInCart = (product: IProductInCart)  => {
   } as const
 }
 
+export const increaseProductCount = (i: number)  => {
+  return {
+    type: actionTypes.INC_PRODUCT_COUNT,
+    i
+  } as const
+}
+
+export const decreaseProductCount = (i: number)  => {
+  return {
+    type: actionTypes.DEC_PRODUCT_COUNT,
+    i
+  } as const
+}
+
 // Thunk Creators
 
 // export const getCurrID = (id:string) => (dispatch: Dispatch<AppActionTypes>) => {debugger

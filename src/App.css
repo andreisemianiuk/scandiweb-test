@@ -127,6 +127,10 @@
 	cursor: pointer;
 }
 
+.actions-currency-switcher:hover {
+	opacity: .7;
+}
+
 .currencies-list {
 	display: none;
 	position: absolute;
@@ -436,6 +440,15 @@
 	text-transform: uppercase;
 	border: none;
 	cursor: pointer;
+}
+
+.product-add-button:active {
+	outline: 1px solid darkgreen;
+}
+
+.product-add-button:hover {
+	background-color: gray;
+	transition-delay: .1s;
 }
 
 .product-description-text {

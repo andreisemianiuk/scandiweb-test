@@ -35,6 +35,7 @@ type PropsCategory = {
 type ProductPagePropsType = {
   price: string
   product: IProduct | undefined
+  productCart: IProductInCart[]
   attributes: IAttributeSet[]
   setAttr: (attribute: IAttributeSet) => void
   clearAttr: () => void
@@ -46,6 +47,10 @@ type CartModalPropsType = {
   price: string
   categories: ICategory[]
   currentCategory: number
+  incCount: (i: number) => void
+  decCount: (i: number) => void
+  handleModal: () => void
+  node: any
 }
 
 type CurrencyMarksType = {
