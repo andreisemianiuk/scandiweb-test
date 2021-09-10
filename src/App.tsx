@@ -7,7 +7,7 @@ import {
   clearAttributes,
   decreaseProductCount,
   getCategoriesTC,
-  increaseProductCount,
+  increaseProductCount, removeProductFromCart,
   setAttribute,
   setCurrentCategory,
   setCurrentPrice,
@@ -19,7 +19,7 @@ import { Category } from './components/Category'
 import { currencyConverter, currencyMarks } from './common/currency-marks/currencyMarks'
 import { ProductPage } from './components/ProductPage'
 import { Error404 } from './components/Error404'
-import { CartPage } from './components/CartPage'
+import { CartPage } from './components/CartPage/CartPage'
 import { Modal } from './components/Modal/Modal'
 import { CartModal } from './components/CartModal/CartModal'
 
@@ -62,7 +62,7 @@ class App extends React.Component<AppPropsType & RouteComponentProps<any, any, u
       isOpenCurrencies, setCurrentProductID,
       currentProductID, attributes, setAttribute,
       clearAttributes, addProductInCart, productCart,
-      increaseProductCount,decreaseProductCount
+      increaseProductCount,decreaseProductCount,removeProductFromCart
     } = this.props
     return (
       <div className={'App'}>
@@ -76,6 +76,7 @@ class App extends React.Component<AppPropsType & RouteComponentProps<any, any, u
                      decCount={decreaseProductCount}
                      handleModal={this.handleClickModal}
                      node={this.cartRef}
+                     deleteItem={removeProductFromCart}
           />
         </Modal>}
         {/*==== /Modal ====*/}
@@ -184,6 +185,7 @@ type MapDispatchToPropsType = {
   clearAttributes: () => void
   setCurrentProductID: (id: string) => void
   addProductInCart: (product: IProductInCart) => void
+  removeProductFromCart: (productId: number) => void
   increaseProductCount: (i: number) => void
   decreaseProductCount: (i: number) => void
 }
@@ -212,6 +214,7 @@ export default withRouter(connect<MapStateToPropsType, MapDispatchToPropsType, {
     setAttribute,
     clearAttributes,
     addProductInCart,
+    removeProductFromCart,
     increaseProductCount,
     decreaseProductCount,
   })(App))

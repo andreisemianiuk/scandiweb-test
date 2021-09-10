@@ -8,6 +8,7 @@ type AppStateType = {
   isOpenCurrencies: boolean
   currentProductID: string | null
   productCart: IProductInCart[]
+  // totalSumOfCartProducts: number
 }
 
 interface IProductInCart {
@@ -51,6 +52,7 @@ type CartModalPropsType = {
   decCount: (i: number) => void
   handleModal: () => void
   node: any
+  deleteItem: (id: number) => void
 }
 
 type CurrencyMarksType = {

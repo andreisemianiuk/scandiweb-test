@@ -12,10 +12,10 @@ export class Category extends React.PureComponent<PropsCategory> {
         <div className={'category-products'}>
           {categories.length && categories[current].products.map((v: IProduct) =>
             (<NavLink to={`product_description`} className={'product-description-link'} onClick={() => setCurrentID(v.id)}>
-              <div className={'category-product-card'}>
+              <div className={`category-product-card ${!v.inStock && 'out'}`}>
                 <div className={`card-image-wrapper`}>
                   {!v.inStock && <span className={'card-stock-state'}>out of stock</span>}
-                  <img className={`card-image ${!v.inStock && 'out'}`} src={v.gallery && v.gallery[0]} alt={''}/>
+                  <img className={`card-image`} src={v.gallery && v.gallery[0]} alt={''}/>
                 </div>
                 <div>
                   <div className={'card-name'}>{v.name}</div>

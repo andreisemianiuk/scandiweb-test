@@ -258,6 +258,10 @@
 	cursor: pointer;
 }
 
+.category-product-card.out {
+	opacity: .5;
+}
+
 .card-image-wrapper {
 	position: relative;
   width: 274px;
@@ -267,10 +271,6 @@
 
 .card-image {
 	width: 100%;
-}
-
-.card-image.out {
-	opacity: .5;
 }
 
 .card-stock-state {

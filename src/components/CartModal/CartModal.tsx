@@ -10,21 +10,23 @@ export class CartModal extends React.Component<CartModalPropsType> {
   constructor(props: CartModalPropsType) {
     super(props)
     
-    this.state = {total: 0}
+    this.state = {total: this.totalSum()}
     this.wrapperRef= React.createRef()
   }
   
   componentDidMount() {
     document.addEventListener('mousedown', this.handleClickOutside)
-    this.setState({total: this.totalSum})
   }
   
   componentWillUnmount() {
-    document.removeEventListener('mousedown', this.handleClickOutside);
+    //
+    document.removeEventListener('mousedown', this.handleClickOutside)
   }
   
   componentDidUpdate(prevProps: Readonly<CartModalPropsType>, prevState: Readonly<{total: number}>, snapshot?: any) {
-    if (prevState.total !== this.state.total) this.setState({total: this.totalSum})
+    if (prevProps.products !== this.props.products) {
+      this.setState({total: this.totalSum()}) // recalculate total sum if changed count of product
+    }
   }
   
   handleClickOutside= (event: MouseEvent) =>{
@@ -43,12 +45,14 @@ export class CartModal extends React.Component<CartModalPropsType> {
     if (count > 1) this.props.decCount(i)
   }
   
-  totalSum = this.props.products
-    .map(v => (v.prices.find(val => val.currency === this.props.price)?.amount || 0) * v.count)
-    .reduce((acc,it) => (acc || 0) + (it || 0),0)
+  totalSum = () => {
+    return this.props.products
+      .map(v => (v.prices.find(val => val.currency === this.props.price)?.amount || 0) * v.count)
+      .reduce((acc,it) => (acc || 0) + (it || 0),0)
+  }
   
   render() {
-    const {products, price, categories} = this.props
+    const {products, price, categories,deleteItem} = this.props
     
     return (
       <div className={styles.container} ref={this.wrapperRef}>
@@ -93,6 +97,9 @@ export class CartModal extends React.Component<CartModalPropsType> {
               </div>
               <div className={styles.imageWrapper}>
                 <img className={styles.image} src={item.gallery[0]} alt={''}/>
+                <div className={styles.deleteItem}>
+                  <button className={styles.deleteBtn} onClick={() => deleteItem(index)}>delete</button>
+                </div>
               </div>
             </div>
           </div>),
@@ -100,8 +107,12 @@ export class CartModal extends React.Component<CartModalPropsType> {
         <div className={styles.totalSum}>
           <span className={styles.totalTitle}>Total</span>
           <span className={styles.totalPrice}>
-            {this.state.total}
+            {`${currencyConverter(price)}${this.state.total.toFixed(2)}`}
           </span>
+        </div>
+        <div className={styles.buttons}>
+          <button className={styles.viewBtn}>view bag</button>
+          <button className={styles.checkoutBtn} onClick={() => alert('check out')}>check out</button>
         </div>
       </div>
     )

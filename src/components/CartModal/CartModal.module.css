@@ -7,8 +7,9 @@
 	top: 0;
 	min-width: 325px;
 	height: max-content;
+	color: #1D1F22;
 	background-color: #FFFFFF;
-	padding: 16px;
+	padding: 20px 13px;
 	z-index: 101;
 }
 
@@ -39,6 +40,7 @@
 }
 
 .price {
+	font-family: 'Raleway','sans-serif';
 	font-weight: 500;
 	font-size: 16px;
 	line-height: 25px;
@@ -72,7 +74,6 @@
 }
 
 .gallery {
-	/*min-height: 100%;*/
 	display: flex;
 	margin-left: 20px;
 }
@@ -115,13 +116,69 @@
 	width: 105px;
 }
 
+.deleteItem {
+	text-align: center;
+}
+
+.deleteBtn {
+	font-family: 'Roboto','sans-serif';
+	color: brown;
+	padding: 1px 4px;
+	cursor: pointer;
+}
+
+.deleteBtn:hover {
+	opacity: .7;
+}
+
 .totalSum {
 	display: flex;
 	justify-content: space-between;
 
-	/*width: 100%;*/
+	font-family: 'Raleway','sans-serif';
+	font-weight: 700;
+	margin-top: 30px;
 }
 
 .totalTitle {
-	font-family: 'Roboto','sans-serif';
+	line-height: 18px;
+	padding-left: 5px;
+}
+
+.totalPrice {
+	line-height: 26px;
+}
+
+.buttons {
+	display: flex;
+	justify-content: space-between;
+	margin-top: 30px;
+}
+
+.buttons button {
+	width: 140px;
+	height: 43px;
+	padding: 12px 27px;
+	font-family: 'Raleway', 'sans-serif';
+	font-weight: 600;
+	font-size: 14px;
+	text-transform: uppercase;
+	line-height: 17px;
+	cursor: pointer;
+}
+
+.buttons button:hover {
+	opacity: .7;
+}
+
+.viewBtn {
+	border: 1px solid #1D1F22;
+	margin-left: 5px;
+}
+
+.checkoutBtn {
+	color: #FFFFFF;
+	background-color: #5ECE7B;
+	margin-right: 5px;
+	border: none;
 }

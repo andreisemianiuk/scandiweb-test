@@ -72,6 +72,13 @@ export const addProductInCart = (product: IProductInCart)  => {
   } as const
 }
 
+export const removeProductFromCart = (productId: number)  => {
+  return {
+    type: actionTypes.REMOVE_PRODUCT_FROM_CART,
+    productId
+  } as const
+}
+
 export const increaseProductCount = (i: number)  => {
   return {
     type: actionTypes.INC_PRODUCT_COUNT,
