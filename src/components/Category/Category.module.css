@@ -1,0 +1,78 @@
+.container {
+	padding-top: 80px;
+}
+
+.title {
+	font-weight: 400;
+	font-size: 42px;
+	line-height: 67px;
+	text-transform: capitalize;
+	margin-bottom: 80px;
+}
+
+.products {
+	display: flex;
+	flex-wrap: wrap;
+}
+
+.productLink {
+	text-decoration: none;
+	color: inherit;
+}
+
+.productCard {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+
+	width: 306px;
+	height: 444px;
+	padding: 16px;
+	margin-right: 60px;
+	margin-bottom: 80px;
+	background-color: aliceblue;
+	cursor: pointer;
+}
+
+.productCard:hover {
+	outline: 1px solid gray;
+}
+
+.productCard.out {
+	opacity: .5;
+}
+
+.imageWrapper {
+	position: relative;
+	width: 274px;
+	max-height: 338px;
+	overflow: hidden;
+}
+
+.stockState {
+	position: absolute;
+	top: 50%;
+	left: 25%;
+
+	font-size: 24px;
+	font-weight: 400;
+	line-height: 38px;
+	text-transform: uppercase;
+}
+
+.image {
+	width: 100%;
+}
+
+.name {
+	font-weight: 300;
+	font-size: 18px;
+	line-height: 29px;
+	text-transform: capitalize;
+}
+
+.price {
+	font-weight: 500;
+	font-size: 18px;
+	line-height: 29px;
+}

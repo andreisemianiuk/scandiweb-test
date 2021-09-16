@@ -8,7 +8,7 @@ type AppStateType = {
   isOpenCurrencies: boolean
   currentProductID: string | null
   productCart: IProductInCart[]
-  // totalSumOfCartProducts: number
+  totalSumOfCartProducts: number
 }
 
 interface IProductInCart {
@@ -24,6 +24,19 @@ interface IProductInCart {
 interface ICategory {
   name?: string
   products: IProduct[]
+}
+
+type HeaderPropsType = {
+  categories: ICategory[]
+  currentCategory: number
+  currentPrice: string
+  isOpenCurrencies: boolean
+  productCart: IProductInCart[]
+  setCurrentCategory: (i: number) => void
+  setCurrentPrice: (price: string) => void
+  setIsOpenCurrencies: (isOpen: boolean) => void
+  handleClickModal: () => void
+  setRef: (x:any) => void
 }
 
 type PropsCategory = {
@@ -53,6 +66,20 @@ type CartModalPropsType = {
   handleModal: () => void
   node: any
   deleteItem: (id: number) => void
+  totalSum: number
+  setTotalSum: () => void
+}
+
+type CartPropsType = {
+  categories: ICategory[]
+  products: IProductInCart[]
+  price: string
+  incCount: (i: number) => void
+  decCount: (i: number, count?: number) => void
+  deleteItem: (id: number) => void
+  styles?: CSSProperties
+  totalSum: number
+  setTotalSum: () => void
 }
 
 type CurrencyMarksType = {

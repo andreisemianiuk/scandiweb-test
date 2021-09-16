@@ -32,7 +32,7 @@
 	margin-top: 25px;
 }
 
-.brand {
+.brand,.name {
 	font-family: 'Raleway','sans-serif';
 	font-size: 16px;
 	font-weight: 300;
@@ -92,15 +92,32 @@
 	width: 25px;
 	height: 25px;
 	border: 1px solid #1D1F22;
-	font-size: 22px;
-	font-weight: bold;
-	color: gray;
 	cursor: pointer;
 }
 
 .countBtn:hover {
 	outline: 1px solid black;
 }
+
+.plus {
+	display: inline-block;
+	background-color: inherit;
+	color: #1D1F22;
+	font-size: 18px;
+	padding-top: 1px;
+}
+
+.plus::before {
+	content: "+";
+}
+
+.minus {
+	display: inline-block;
+	width: 8px;
+	border-top: 2px solid #1D1F22;
+	padding-bottom: 3px;
+}
+
 
 .count {
 	font-family: 'Raleway','sans-serif';
@@ -122,13 +139,16 @@
 
 .deleteBtn {
 	font-family: 'Roboto','sans-serif';
-	color: brown;
-	padding: 1px 4px;
+	color: #1D1F22;
+	background-color: inherit;
+	border: none;
+	border-bottom: 1px dashed;
 	cursor: pointer;
 }
 
 .deleteBtn:hover {
-	opacity: .7;
+	opacity: .9;
+	color: red;
 }
 
 .totalSum {

@@ -1,68 +1,64 @@
 import React from 'react'
 import './App.css'
-import { NavLink, Redirect, Route, RouteComponentProps, Switch, withRouter } from 'react-router-dom'
-import cartIcon from './icons/cart_icon.png'
+import { Redirect, Route, Switch } from 'react-router-dom'
 import {
   addProductInCart,
   clearAttributes,
   decreaseProductCount,
   getCategoriesTC,
-  increaseProductCount, removeProductFromCart,
+  increaseProductCount,
+  removeProductFromCart,
   setAttribute,
   setCurrentCategory,
   setCurrentPrice,
   setCurrentProductID,
   setIsOpenCurrencies,
+  setTotalSum,
 } from './store/actionCreators'
 import { connect } from 'react-redux'
-import { Category } from './components/Category'
-import { currencyConverter, currencyMarks } from './common/currency-marks/currencyMarks'
-import { ProductPage } from './components/ProductPage'
-import { Error404 } from './components/Error404'
+import { Category } from './components/Category/Category'
+import { ProductPage } from './components/ProductPage/ProductPage'
+import { Error404 } from './components/Error404/Error404'
 import { CartPage } from './components/CartPage/CartPage'
 import { Modal } from './components/Modal/Modal'
-import { CartModal } from './components/CartModal/CartModal'
+import CartModal from './components/CartModal/CartModal'
+import { Header } from './components/Header/Header'
 
-class App extends React.Component<AppPropsType & RouteComponentProps<any, any, unknown>> {
+class App extends React.Component<AppPropsType> {
   state: {
     showModal: boolean
   }
-  private readonly cartRef: React.RefObject<HTMLSpanElement>
+  private childRef: any
   
-  constructor(props: AppPropsType & RouteComponentProps<any, any, unknown>) {
+  constructor(props: AppPropsType) {
     super(props)
     
-    this.cartRef = React.createRef()
+    this.setRef = this.setRef.bind(this)
     this.state = {showModal: false}
   }
   
-  handleNav(idx: number) {
-    this.props.setCurrentCategory(idx)
+  componentDidMount() {
+    this.props.getCategoriesTC()
+    this.childRef.focus()
+  }
+  
+  setRef(input:any) {
+    this.childRef = input
   }
   
   handleClickModal = () => {
     this.setState({showModal: !this.state.showModal})
   }
   
-  openCurrencies = () => {
-    this.props.setIsOpenCurrencies(!this.props.isOpenCurrencies)
-  }
-  
-  pickCurrency = (price: string) => {
-    this.props.setCurrentPrice(price)
-  }
-  
-  componentDidMount() {
-    this.props.getCategoriesTC()
-  }
   
   render() {
     const {
-      categories, currentCategory, currentPrice,
-      isOpenCurrencies, setCurrentProductID,
+      categories, currentCategory, currentPrice,setCurrentPrice,
+      isOpenCurrencies, setCurrentProductID,setIsOpenCurrencies,
       currentProductID, attributes, setAttribute,
       clearAttributes, addProductInCart, productCart,
-      increaseProductCount,decreaseProductCount,removeProductFromCart
+      increaseProductCount,decreaseProductCount,setCurrentCategory,
+      removeProductFromCart,totalSumOfCartProducts,setTotalSum
     } = this.props
     return (
       <div className={'App'}>
@@ -75,62 +71,24 @@ class App extends React.Component<AppPropsType & RouteComponentProps<any, any, u
                      incCount={increaseProductCount}
                      decCount={decreaseProductCount}
                      handleModal={this.handleClickModal}
-                     node={this.cartRef}
+                     node={this.childRef}
                      deleteItem={removeProductFromCart}
+                     totalSum={totalSumOfCartProducts}
+                     setTotalSum={setTotalSum}
           />
         </Modal>}
         {/*==== /Modal ====*/}
-        <header className={'header'}>
-          {/*==== Navigation ====*/}
-          <nav className={'header-nav'}>
-            <ul className={'nav-category-list'}>
-              {categories.map((v: ICategory, i: number) =>
-                <NavLink to={'/product_list'} className={'nav-link'}>
-                  <li
-                    key={`${v}${i}`}
-                    className={`nav-category-item ${i === currentCategory ? 'active' : null}`}
-                    onClick={() => this.handleNav(i)}
-                  >
-                    {v.name}
-                  </li>
-                </NavLink>)
-              }
-            </ul>
-          </nav>
-          {/*==== Logo ====*/}
-          <div className={'logo-container'}>
-            <span className={'logo-square'}/>
-            <span className={'logo-half-circle'}/>
-            <span className={'logo-arrow'}/>
-          </div>
-          {/*==== Actions ====*/}
-          <div className={'actions-container'}>
-            <div
-              className={'actions-currency-switcher'}
-              onClick={this.openCurrencies}
-            >
-              <span className={'actions-currency-value'}>
-                {currencyConverter(currentPrice)}
-              </span>
-              <span className={'actions-currency-arrow'}/>
-              <div className={`currencies-list ${isOpenCurrencies ? 'open' : null}`}>
-                {Object.entries(currencyMarks).map((v: string[]) =>
-                  <div
-                    className={'currency-value'}
-                    onClick={() => this.pickCurrency(v[0])}
-                  >
-                    {`${v[1]} ${v[0]}`}
-                  </div>)
-                }
-              </div>
-            </div>
-            <span className={'actions-cart'} onClick={this.handleClickModal} ref={this.cartRef}>
-              <img className={'actions-cart-image'} src={cartIcon} alt=""/>
-              {this.props.productCart.length ?
-                <span className={'actions-cart-count-icon'}>{this.props.productCart.length}</span> : null}
-            </span>
-          </div>
-        </header>
+        <Header categories={categories}
+                currentCategory={currentCategory}
+                isOpenCurrencies={isOpenCurrencies}
+                productCart={productCart}
+                setCurrentCategory={setCurrentCategory}
+                currentPrice={currentPrice}
+                setCurrentPrice={setCurrentPrice}
+                setIsOpenCurrencies={setIsOpenCurrencies}
+                handleClickModal={this.handleClickModal}
+                setRef={this.setRef}
+        />
         <main>
           <Switch>
             <Route path={'/'} exact render={() => <Redirect to={'product_list'}/>}/>
@@ -155,7 +113,18 @@ class App extends React.Component<AppPropsType & RouteComponentProps<any, any, u
                   addProduct={addProductInCart}
                 />}
             />
-            <Route path={`/cart`} render={() => <CartPage/>}/>
+            <Route path={`/cart`} render={() =>
+              <CartPage
+                products={productCart}
+                price={currentPrice}
+                decCount={decreaseProductCount}
+                incCount={increaseProductCount}
+                deleteItem={removeProductFromCart}
+                categories={categories}
+                totalSum={totalSumOfCartProducts}
+                setTotalSum={setTotalSum}
+              />}
+            />
             <Route render={() => <Error404/>}/>
           </Switch>
         </main>
@@ -171,8 +140,9 @@ type MapStateToPropsType = {
   currentPrice: string
   attributes: IAttribute[]
   isOpenCurrencies: boolean
-  productCart: IProductInCart[]
   currentProductID: string | null
+  productCart: IProductInCart[]
+  totalSumOfCartProducts: number
 }
 
 type MapDispatchToPropsType = {
@@ -188,6 +158,7 @@ type MapDispatchToPropsType = {
   removeProductFromCart: (productId: number) => void
   increaseProductCount: (i: number) => void
   decreaseProductCount: (i: number) => void
+  setTotalSum: () => void
 }
 type AppPropsType = MapStateToPropsType & MapDispatchToPropsType
 
@@ -200,9 +171,10 @@ const mapStateToProps = (state: AppStateType): MapStateToPropsType => ({
   isOpenCurrencies: state.isOpenCurrencies,
   currentProductID: state.currentProductID,
   productCart: state.productCart,
+  totalSumOfCartProducts: state.totalSumOfCartProducts,
 })
 
-export default withRouter(connect<MapStateToPropsType, MapDispatchToPropsType, {}, AppStateType>(
+export default connect<MapStateToPropsType, MapDispatchToPropsType, {}, AppStateType>(
   mapStateToProps,
   {
     // initializeApp,
@@ -217,4 +189,5 @@ export default withRouter(connect<MapStateToPropsType, MapDispatchToPropsType, {
     removeProductFromCart,
     increaseProductCount,
     decreaseProductCount,
-  })(App))
+    setTotalSum,
+  })(App)

@@ -1,0 +1,213 @@
+.header {
+	font-family: Raleway, sans-serif;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	min-height: 78px;
+}
+
+/*==== Navigation ====*/
+
+.navList {
+	display: flex;
+	font-weight: 600;
+	list-style-type: none;
+}
+
+.navLink {
+	color: inherit;
+	text-decoration: none;
+}
+
+.navItem {
+	position: relative;
+	height: 20px;
+	margin-left: 32px;
+	text-transform: uppercase;
+	cursor: pointer;
+}
+
+.navList:hover .navItem:not(:hover) {
+	opacity: .2;
+}
+
+.navList .navItem {
+	transition: 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+
+.navItem::after {
+	position: absolute;
+	content: '';
+	top: 47px;
+	left: -15%;
+	width: 130%;
+	height: 2px;
+	background: #5ECE7B;
+	transform: scaleX(0);
+	transition: 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.navItem.active {
+	color: #5ECE7B;
+}
+
+.navItem.active::after, .navItem:hover::after {
+	transform: scaleX(1);
+}
+
+/*==== Logo ====*/
+
+.logoContainer {
+	position: relative;
+	top: 5px;
+	border-bottom: 28px solid #5ECE7B;
+	border-left: 2px solid transparent;
+	border-right: 2px solid transparent;
+	height: 0;
+	width: 32px;
+}
+
+.logoSquare {
+	position: absolute;
+	width: 22px;
+	height: 2px;
+	background-color: #1DCF65;
+	top: -2px;
+	left: 3px;
+}
+
+.logoHalfCircle {
+	position: absolute;
+	top: 12px;
+	left: 25%;
+	width: 14px;
+	height: 9px;
+	border-bottom-left-radius: 9px;
+	border-bottom-right-radius: 9px;
+	border: 1px solid #fafafa;
+	border-top: 0;
+}
+
+.logoArrow {
+	position: absolute;
+	width: 4px;
+	height: 4px;
+	top: 10px;
+	left: 66%;
+	transform: rotate(-45deg);
+}
+
+.logoArrow::before {
+	display: block;
+	content: '';
+	width: 100%;
+	height: 100%;
+	border-width: 1px 1px 0 0;
+	border-style: solid;
+	border-color: #fafafa;
+}
+
+/*==== Header Actions ====*/
+
+.actionsContainer {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	width: 65px;
+}
+
+.currencySwitcher {
+	position: relative;
+	}
+
+.currencySwitcherValue {
+	font-weight: 500;
+	font-size: 18px;
+	line-height: 29px;
+	cursor: pointer;
+}
+
+.currencySwitcherValue:hover {
+	opacity: .7;
+}
+
+.currencyArrow {
+	position: absolute;
+	width: 5px;
+	height: 5px;
+	top: 13px;
+	left: 22px;
+	transform: rotate(135deg);
+}
+
+.actions-currency-arrow::after {
+	display: block;
+	content: '';
+	width: 100%;
+	height: 100%;
+	border-width: 1px 1px 0 0;
+	border-style: solid;
+}
+
+.currenciesList {
+	display: none;
+	position: absolute;
+	top: 30px;
+	left: -20px;
+
+	width: 114px;
+	min-height: 169px;
+	padding-left: 20px;
+	padding-top: 20px;
+	background-color: #FFFFFF;
+}
+
+.currenciesList.open {
+	display: block;
+	z-index: 1000;
+}
+
+.currencyValue {
+	font-weight: 500;
+	font-size: 18px;
+	line-height: 29px;
+	margin-bottom: 21px;
+	cursor: pointer;
+}
+
+.currencyValue:hover {
+	color: #1DCF65;
+	font-weight: 700;
+	transform: scale(1,1.1);
+}
+
+.cart {
+	position: relative;
+	font-family: 'Roboto','sans-serif';
+	font-size: 14px;
+	font-weight: 700;
+	line-height: 20px;
+	text-align: center;
+	cursor: pointer;
+}
+
+.cart:hover {
+	opacity: .7;
+}
+
+.cartImage {
+	padding-top: 5px;
+}
+
+.cartCount {
+	position: absolute;
+	top: -4px;
+	left: 11px;
+	width: 20px;
+	height: 20px;
+
+	background-color: #1D1F22;
+	color: #FFFFFF;
+	border-radius: 60px;
+}
