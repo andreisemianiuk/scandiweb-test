@@ -11,6 +11,7 @@ const initialState: AppStateType = {
   attributes: [],
   currentProductID: null,
   productCart: [],
+  totalSumOfCartProducts: 0
 }
 
 export const appReducer = (state: AppStateType = initialState, action: AppActionTypes): AppStateType => {
@@ -93,6 +94,13 @@ export const appReducer = (state: AppStateType = initialState, action: AppAction
           .map((v, i) => i === action.i
             ? {...v, count: --v.count}
             : v),
+      }
+    case actionTypes.SET_TOTAL_SUM:
+      return {
+        ...state,
+        totalSumOfCartProducts: state.productCart
+          .map(v => (v.prices.find(val => val.currency === state.currentPrice)?.amount || 0) * v.count)
+          .reduce((acc,it) => (acc || 0) + (it || 0),0)
       }
     default:
       return state

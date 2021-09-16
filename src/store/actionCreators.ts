@@ -93,39 +93,41 @@ export const decreaseProductCount = (i: number)  => {
   } as const
 }
 
+export const setTotalSum = ()  => {
+  return {
+    type: actionTypes.SET_TOTAL_SUM,
+  } as const
+}
+
 // Thunk Creators
 
-// export const getCurrID = (id:string) => (dispatch: Dispatch<AppActionTypes>) => {debugger
-//   dispatch(setCurrentProductID(id))
-// }
-
 export const getCategoriesTC = () => (dispatch: Dispatch<AppActionTypes>) => {
-  const data = fetchGraphQL(new Query('categories {\n' +
-    '    name\n' +
-    '    products {\n' +
-    '      id\n' +
-    '      name\n' +
-    '      inStock\n' +
-    '      category\n' +
-    '      brand\n' +
-    '      gallery\n' +
-    '      description\n' +
-    '      attributes {\n' +
-    '        id\n' +
-    '        name\n' +
-    '        type\n' +
-    '        items {\n' +
-    '          id\n' +
-    '          displayValue\n' +
-    '          value\n' +
-    '        }\n' +
-    '      }\n' +
-    '      prices {\n' +
-    '        currency\n' +
-    '        amount\n' +
-    '      }\n' +
-    '    }\n' +
-    '  }', true))
+  const data = fetchGraphQL(new Query(`categories {
+    name
+    products {
+      id
+      name
+      inStock
+      category
+      brand
+      gallery
+      description
+      attributes {
+        id
+        name
+        type
+        items {
+          id
+          displayValue
+          value
+        }
+      }
+      prices {
+        currency
+        amount
+      }
+    }
+  }`, true))
   
   data.then(res => dispatch(setCategories(res.categories)))
 }
