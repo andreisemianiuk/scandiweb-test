@@ -51,7 +51,7 @@ export class ProductPage extends React.Component<ProductPagePropsType> {
     
     if (!res) {
       this.props.addProduct(newProduct)
-      alert(`${newProduct.name} ${attributesValues} added`)
+      // alert(`${newProduct.name} ${attributesValues} added`)
     } else {
       alert(`This ${newProduct.name} ${attributesValues} has been already added to the cart`)
     }

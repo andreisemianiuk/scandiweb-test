@@ -34,10 +34,6 @@
 	cursor: pointer;
 }
 
-.productCard:hover {
-	outline: 1px solid gray;
-}
-
 .productCard.out {
 	opacity: .5;
 }
@@ -62,6 +58,9 @@
 
 .image {
 	width: 100%;
+}
+.image:hover {
+	transform: scale(1.1,1.1);
 }
 
 .name {

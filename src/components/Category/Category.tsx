@@ -3,7 +3,7 @@ import s from './Category.module.css'
 import { NavLink } from 'react-router-dom'
 import { currencyConverter } from '../../common/currency-marks/currencyMarks'
 
-export class Category extends React.PureComponent<PropsCategory> {
+export class Category extends React.PureComponent<CategoryPropsType> {
   render() {
     const {categories, current, price,setCurrentID} = this.props
     

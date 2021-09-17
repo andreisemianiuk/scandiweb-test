@@ -2,7 +2,6 @@ import * as actionTypes from './actionTypes'
 import { AppActionTypes } from './actionTypes'
 
 const initialState: AppStateType = {
-  initialized: false,
   isFetching: false,
   categories: [],
   currentCategory: 0,
@@ -16,12 +15,6 @@ const initialState: AppStateType = {
 
 export const appReducer = (state: AppStateType = initialState, action: AppActionTypes): AppStateType => {
   switch (action.type) {
-    case actionTypes.SET_INITIALIZED_SUCCESS:
-      return {
-        ...state,
-        initialized: true,
-        
-      }
     case actionTypes.SET_IS_FETCHING:
       return {
         ...state,

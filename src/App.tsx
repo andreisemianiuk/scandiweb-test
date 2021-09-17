@@ -65,6 +65,7 @@ class App extends React.Component<AppPropsType> {
     return (
       <>
         {isFetching
+          // display loader while fetching data from server
           ? <Preloader/>
           : <div className={'App'}>
             {/*==== Modal ====*/}
@@ -143,7 +144,6 @@ class App extends React.Component<AppPropsType> {
 }
 
 type MapStateToPropsType = {
-  // initialized: boolean
   isFetching: boolean
   categories: ICategory[]
   currentCategory: number
@@ -156,7 +156,6 @@ type MapStateToPropsType = {
 }
 
 type MapDispatchToPropsType = {
-  // initializeApp: () => void
   getCategoriesTC: () => void
   setCurrentCategory: (current: number) => void
   setCurrentPrice: (price: string) => void
@@ -174,7 +173,6 @@ type MapDispatchToPropsType = {
 type AppPropsType = MapStateToPropsType & MapDispatchToPropsType
 
 const mapStateToProps = (state: AppStateType): MapStateToPropsType => ({
-  // initialized: getInitialized(state),
   isFetching: state.isFetching,
   categories: state.categories,
   currentCategory: state.currentCategory,
@@ -189,7 +187,6 @@ const mapStateToProps = (state: AppStateType): MapStateToPropsType => ({
 export default connect<MapStateToPropsType, MapDispatchToPropsType, {}, AppStateType>(
   mapStateToProps,
   {
-    // initializeApp,
     getCategoriesTC,
     setCurrentCategory,
     setCurrentPrice,

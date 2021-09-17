@@ -4,12 +4,6 @@ import { Dispatch } from 'react'
 import { fetchGraphQL } from '../api/api'
 import { Query } from '@tilework/opus'
 
-export const setInitializedSuccess = () => {
-  return {
-    type: actionTypes.SET_INITIALIZED_SUCCESS,
-  } as const
-}
-
 export const setIsFetching = (isFetching: boolean) => {
   return {
     type: actionTypes.SET_IS_FETCHING,

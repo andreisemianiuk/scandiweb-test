@@ -1,7 +1,7 @@
 import React from 'react'
 import { currencyConverter } from '../../common/currency-marks/currencyMarks'
 
-export class CartProducts extends React.PureComponent<CartPropsType> {
+class CartProducts extends React.PureComponent<CartPropsType> {
   state: {
     currentImages: number[] | []
   }
@@ -18,7 +18,7 @@ export class CartProducts extends React.PureComponent<CartPropsType> {
     this.setState({currentImages: Array(this.props.products.length).fill(0)})
   }
   
-  componentDidUpdate(prevProps: Readonly<CartModalPropsType>, prevState: Readonly<{total: number}>, snapshot?: any) {
+  componentDidUpdate(prevProps: Readonly<CartModalPropsType>, prevState: Readonly<{ total: number }>, snapshot?: any) {
     if (prevProps.products !== this.props.products) {
       this.props.setTotalSum() // recalculate total sum if changed count of product
     }
@@ -29,7 +29,7 @@ export class CartProducts extends React.PureComponent<CartPropsType> {
       this.setState(
         {
           currentImages: this.state.currentImages
-            .map((v,idx) => i === idx ? v - 1 : v)
+            .map((v, idx) => i === idx ? v - 1 : v),
         })
     }
   }
@@ -39,7 +39,7 @@ export class CartProducts extends React.PureComponent<CartPropsType> {
       this.setState(
         {
           currentImages: this.state.currentImages
-            .map((v,idx) => i === idx ? v + 1 : v)
+            .map((v, idx) => i === idx ? v + 1 : v),
         })
     }
   }
@@ -122,3 +122,5 @@ export class CartProducts extends React.PureComponent<CartPropsType> {
     )
   }
 }
+
+export default CartProducts

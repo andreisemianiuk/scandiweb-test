@@ -1,5 +1,5 @@
+// types
 type AppStateType = {
-  initialized: boolean
   isFetching: boolean
   categories: ICategory[]
   currentCategory: number
@@ -10,22 +10,6 @@ type AppStateType = {
   productCart: IProductInCart[]
   totalSumOfCartProducts: number
 }
-
-interface IProductInCart {
-  name: string
-  brand: string
-  category: string
-  gallery: string[]
-  prices: IPrice[]
-  attributes: IAttributeSet[]
-  count: number
-}
-
-interface ICategory {
-  name?: string
-  products: IProduct[]
-}
-
 type HeaderPropsType = {
   categories: ICategory[]
   currentCategory: number
@@ -38,14 +22,12 @@ type HeaderPropsType = {
   handleClickModal: () => void
   setRef: (x:any) => void
 }
-
-type PropsCategory = {
+type CategoryPropsType = {
   categories: ICategory[]
   current: number
   price: string
   setCurrentID: (id: string) => void
 }
-
 type ProductPagePropsType = {
   price: string
   product: IProduct | undefined
@@ -55,7 +37,6 @@ type ProductPagePropsType = {
   clearAttr: () => void
   addProduct: (product: IProductInCart) => void
 }
-
 type CartModalPropsType = {
   products: IProductInCart[]
   price: string
@@ -64,12 +45,12 @@ type CartModalPropsType = {
   incCount: (i: number) => void
   decCount: (i: number) => void
   handleModal: () => void
+  clearCart: () => void
   node: any
   deleteItem: (id: number) => void
   totalSum: number
   setTotalSum: () => void
 }
-
 type CartPropsType = {
   categories: ICategory[]
   products: IProductInCart[]
@@ -80,8 +61,8 @@ type CartPropsType = {
   styles?: CSSProperties
   totalSum: number
   setTotalSum: () => void
+  clearCart?: () => void
 }
-
 type CurrencyMarksType = {
   ['USD']: string
   ['GBP']: string
@@ -90,6 +71,20 @@ type CurrencyMarksType = {
   ['RUB']: string
 }
 
+// interfaces
+interface IProductInCart {
+  name: string
+  brand: string
+  category: string
+  gallery: string[]
+  prices: IPrice[]
+  attributes: IAttributeSet[]
+  count: number
+}
+interface ICategory {
+  name?: string
+  products: IProduct[]
+}
 interface IProduct {
   id: string
   name: string
@@ -101,25 +96,18 @@ interface IProduct {
   prices: IPrice[]
   brand: string
 }
-
 interface IAttributeSet {
   id: string
   name?: string
   type?: string
   items?: IAttribute[]
 }
-
 interface IAttribute {
   id: string
   displayValue?: string
   value?: string
 }
-
 interface IPrice {
   currency: string
   amount: number
-}
-
-interface ICategories {
-  categories: ICategory[]
 }

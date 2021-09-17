@@ -1,14 +1,14 @@
 import React from 'react'
 import styles from './CartModal.module.css'
 import { RouteComponentProps, withRouter } from 'react-router-dom'
-import { CartProducts } from '../CartPage/CartProducts'
+import CartProducts from '../CartPage/CartProducts'
 
-class CartModal extends React.Component<CartModalPropsType & RouteComponentProps<any,any,unknown>> {
+class CartModal extends React.Component<CartModalPropsType & RouteComponentProps<any, any, unknown>> {
   private readonly wrapperRef: React.RefObject<any>
   
-  constructor(props: CartModalPropsType & RouteComponentProps<any,any,unknown>) {
+  constructor(props: CartModalPropsType & RouteComponentProps<any, any, unknown>) {
     super(props)
-    this.wrapperRef= React.createRef()
+    this.wrapperRef = React.createRef()
   }
   
   componentDidMount() {
@@ -19,7 +19,7 @@ class CartModal extends React.Component<CartModalPropsType & RouteComponentProps
     document.removeEventListener('click', this.handleClickOutside)
   }
   
-  handleClickOutside= (event: MouseEvent) =>{
+  handleClickOutside = (event: MouseEvent) => {
     if (this.wrapperRef
       // check if the click was outside the cart
       && !this.wrapperRef.current.contains(event.target)
@@ -33,8 +33,19 @@ class CartModal extends React.Component<CartModalPropsType & RouteComponentProps
     this.props.handleModal()
   }
   
+  checkOut = () => {
+    if (this.props.products.length) {
+      this.props.clearCart()
+      this.props.handleModal()
+      this.props.history.push('/')
+      alert('products has been bought successfully')
+    } else {
+      alert('add some product')
+    }
+  }
+  
   render() {
-    const {products, price, categories,deleteItem,incCount,decCount,totalSum,setTotalSum} = this.props
+    const {products, price, categories, deleteItem, incCount, decCount, totalSum, setTotalSum} = this.props
     
     return (
       <div className={styles.container} ref={this.wrapperRef}>
@@ -55,7 +66,7 @@ class CartModal extends React.Component<CartModalPropsType & RouteComponentProps
         />
         <div className={styles.buttons}>
           <button className={styles.viewBtn} onClick={this.handleViewBtn}>view bag</button>
-          <button className={styles.checkoutBtn} onClick={() => alert('check out')}>check out</button>
+          <button className={styles.checkoutButton} onClick={this.checkOut}>check out</button>
         </div>
       </div>
     )

@@ -1,19 +1,20 @@
 import {
   addProductInCart,
-  clearAttributes, clearProductCart,
+  clearAttributes,
+  clearProductCart,
   decreaseProductCount,
-  increaseProductCount, removeProductFromCart,
+  increaseProductCount,
+  removeProductFromCart,
   setAttribute,
   setCategories,
   setCurrentCategory,
   setCurrentPrice,
   setCurrentProductID,
-  setInitializedSuccess,
   setIsFetching,
-  setIsOpenCurrencies, setTotalSum,
+  setIsOpenCurrencies,
+  setTotalSum,
 } from './actionCreators'
 
-export const SET_INITIALIZED_SUCCESS = 'SET_INITIALIZED_SUCCESS'
 export const SET_IS_FETCHING = 'SET_IS_FETCHING'
 export const SET_CATEGORIES = 'SET_CATEGORIES'
 export const SET_CURRENT_CATEGORY = 'SET_CURRENT_CATEGORY'
@@ -29,8 +30,7 @@ export const INC_PRODUCT_COUNT = 'INC_PRODUCT_IN_CART'
 export const DEC_PRODUCT_COUNT = 'DEC_PRODUCT_COUNT'
 export const SET_TOTAL_SUM = 'SET_TOTAL_SUM'
 
-export type AppActionTypes = ReturnType<typeof setInitializedSuccess
-  | typeof setIsFetching
+export type AppActionTypes = ReturnType<typeof setIsFetching
   | typeof setCategories
   | typeof setCurrentCategory
   | typeof setCurrentPrice
