@@ -79,6 +79,11 @@ export const appReducer = (state: AppStateType = initialState, action: AppAction
         ...state,
         productCart: state.productCart.filter((_,i) => i !== action.productId)
       }
+    case actionTypes.CLEAR_PRODUCT_CART:
+      return {
+        ...state,
+        productCart: []
+      }
     case actionTypes.INC_PRODUCT_COUNT:
       return {
         ...state,

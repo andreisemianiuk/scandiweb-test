@@ -79,6 +79,12 @@ export const removeProductFromCart = (productId: number)  => {
   } as const
 }
 
+export const clearProductCart = ()  => {
+  return {
+    type: actionTypes.CLEAR_PRODUCT_CART,
+  } as const
+}
+
 export const increaseProductCount = (i: number)  => {
   return {
     type: actionTypes.INC_PRODUCT_COUNT,
@@ -102,6 +108,7 @@ export const setTotalSum = ()  => {
 // Thunk Creators
 
 export const getCategoriesTC = () => (dispatch: Dispatch<AppActionTypes>) => {
+  dispatch(setIsFetching(true))
   const data = fetchGraphQL(new Query(`categories {
     name
     products {
@@ -129,5 +136,8 @@ export const getCategoriesTC = () => (dispatch: Dispatch<AppActionTypes>) => {
     }
   }`, true))
   
-  data.then(res => dispatch(setCategories(res.categories)))
+  data.then(res => {
+    dispatch(setCategories(res.categories))
+    dispatch(setIsFetching(false))
+  })
 }

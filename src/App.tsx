@@ -4,6 +4,7 @@ import { Redirect, Route, Switch } from 'react-router-dom'
 import {
   addProductInCart,
   clearAttributes,
+  clearProductCart,
   decreaseProductCount,
   getCategoriesTC,
   increaseProductCount,
@@ -19,10 +20,11 @@ import { connect } from 'react-redux'
 import { Category } from './components/Category/Category'
 import { ProductPage } from './components/ProductPage/ProductPage'
 import { Error404 } from './components/Error404/Error404'
-import { CartPage } from './components/CartPage/CartPage'
 import { Modal } from './components/Modal/Modal'
-import CartModal from './components/CartModal/CartModal'
 import { Header } from './components/Header/Header'
+import CartPage from './components/CartPage/CartPage'
+import CartModal from './components/CartModal/CartModal'
+import { Preloader } from './common/preloader/Preloader'
 
 class App extends React.Component<AppPropsType> {
   state: {
@@ -39,10 +41,10 @@ class App extends React.Component<AppPropsType> {
   
   componentDidMount() {
     this.props.getCategoriesTC()
-    this.childRef.focus()
+    this.childRef && this.childRef.focus()
   }
   
-  setRef(input:any) {
+  setRef(input: any) {
     this.childRef = input
   }
   
@@ -53,88 +55,96 @@ class App extends React.Component<AppPropsType> {
   
   render() {
     const {
-      categories, currentCategory, currentPrice,setCurrentPrice,
-      isOpenCurrencies, setCurrentProductID,setIsOpenCurrencies,
-      currentProductID, attributes, setAttribute,
-      clearAttributes, addProductInCart, productCart,
-      increaseProductCount,decreaseProductCount,setCurrentCategory,
-      removeProductFromCart,totalSumOfCartProducts,setTotalSum
+      categories, currentCategory, currentPrice, setCurrentPrice,
+      isOpenCurrencies, setCurrentProductID, setIsOpenCurrencies,
+      currentProductID, attributes, setAttribute, isFetching,
+      clearAttributes, addProductInCart, productCart, clearProductCart,
+      increaseProductCount, decreaseProductCount, setCurrentCategory,
+      removeProductFromCart, totalSumOfCartProducts, setTotalSum,
     } = this.props
     return (
-      <div className={'App'}>
-        {/*==== Modal ====*/}
-        {this.state.showModal && <Modal>
-          <CartModal products={productCart}
-                     price={currentPrice}
-                     categories={categories}
-                     currentCategory={currentCategory}
-                     incCount={increaseProductCount}
-                     decCount={decreaseProductCount}
-                     handleModal={this.handleClickModal}
-                     node={this.childRef}
-                     deleteItem={removeProductFromCart}
-                     totalSum={totalSumOfCartProducts}
-                     setTotalSum={setTotalSum}
-          />
-        </Modal>}
-        {/*==== /Modal ====*/}
-        <Header categories={categories}
-                currentCategory={currentCategory}
-                isOpenCurrencies={isOpenCurrencies}
-                productCart={productCart}
-                setCurrentCategory={setCurrentCategory}
-                currentPrice={currentPrice}
-                setCurrentPrice={setCurrentPrice}
-                setIsOpenCurrencies={setIsOpenCurrencies}
-                handleClickModal={this.handleClickModal}
-                setRef={this.setRef}
-        />
-        <main>
-          <Switch>
-            <Route path={'/'} exact render={() => <Redirect to={'product_list'}/>}/>
-            <Route path={'/product_list'} render={() =>
-              <Category
-                categories={categories}
-                current={currentCategory}
-                price={currentPrice}
-                setCurrentID={setCurrentProductID}
-              />}
+      <>
+        {isFetching
+          ? <Preloader/>
+          : <div className={'App'}>
+            {/*==== Modal ====*/}
+            {this.state.showModal && <Modal>
+              <CartModal products={productCart}
+                         price={currentPrice}
+                         categories={categories}
+                         currentCategory={currentCategory}
+                         incCount={increaseProductCount}
+                         decCount={decreaseProductCount}
+                         handleModal={this.handleClickModal}
+                         node={this.childRef}
+                         deleteItem={removeProductFromCart}
+                         clearCart={clearProductCart}
+                         totalSum={totalSumOfCartProducts}
+                         setTotalSum={setTotalSum}
+              />
+            </Modal>}
+            {/*==== /Modal ====*/}
+            <Header categories={categories}
+                    currentCategory={currentCategory}
+                    isOpenCurrencies={isOpenCurrencies}
+                    productCart={productCart}
+                    setCurrentCategory={setCurrentCategory}
+                    currentPrice={currentPrice}
+                    setCurrentPrice={setCurrentPrice}
+                    setIsOpenCurrencies={setIsOpenCurrencies}
+                    handleClickModal={this.handleClickModal}
+                    setRef={this.setRef}
             />
-            <Route
-              path={`/product_description`}
-              render={() =>
-                <ProductPage
-                  product={categories[currentCategory]?.products.find((v: IProduct) => v.id === currentProductID)}
-                  productCart={productCart}
-                  price={currentPrice}
-                  attributes={attributes}
-                  setAttr={setAttribute}
-                  clearAttr={clearAttributes}
-                  addProduct={addProductInCart}
-                />}
-            />
-            <Route path={`/cart`} render={() =>
-              <CartPage
-                products={productCart}
-                price={currentPrice}
-                decCount={decreaseProductCount}
-                incCount={increaseProductCount}
-                deleteItem={removeProductFromCart}
-                categories={categories}
-                totalSum={totalSumOfCartProducts}
-                setTotalSum={setTotalSum}
-              />}
-            />
-            <Route render={() => <Error404/>}/>
-          </Switch>
-        </main>
-      </div>
+            <main>
+              <Switch>
+                <Route path={'/'} exact render={() => <Redirect to={'product_list'}/>}/>
+                <Route path={'/product_list'} render={() =>
+                  <Category
+                    categories={categories}
+                    current={currentCategory}
+                    price={currentPrice}
+                    setCurrentID={setCurrentProductID}
+                  />}
+                />
+                <Route
+                  path={`/product_description`}
+                  render={() =>
+                    <ProductPage
+                      product={categories[currentCategory]?.products.find((v: IProduct) => v.id === currentProductID)}
+                      productCart={productCart}
+                      price={currentPrice}
+                      attributes={attributes}
+                      setAttr={setAttribute}
+                      clearAttr={clearAttributes}
+                      addProduct={addProductInCart}
+                    />}
+                />
+                <Route path={`/cart`} render={() =>
+                  <CartPage
+                    products={productCart}
+                    price={currentPrice}
+                    decCount={decreaseProductCount}
+                    incCount={increaseProductCount}
+                    deleteItem={removeProductFromCart}
+                    categories={categories}
+                    totalSum={totalSumOfCartProducts}
+                    setTotalSum={setTotalSum}
+                    clearCart={clearProductCart}
+                  />}
+                />
+                <Route render={() => <Error404/>}/>
+              </Switch>
+            </main>
+          </div>
+        }
+      </>
     )
   }
 }
 
 type MapStateToPropsType = {
   // initialized: boolean
+  isFetching: boolean
   categories: ICategory[]
   currentCategory: number
   currentPrice: string
@@ -156,6 +166,7 @@ type MapDispatchToPropsType = {
   setCurrentProductID: (id: string) => void
   addProductInCart: (product: IProductInCart) => void
   removeProductFromCart: (productId: number) => void
+  clearProductCart: () => void
   increaseProductCount: (i: number) => void
   decreaseProductCount: (i: number) => void
   setTotalSum: () => void
@@ -164,6 +175,7 @@ type AppPropsType = MapStateToPropsType & MapDispatchToPropsType
 
 const mapStateToProps = (state: AppStateType): MapStateToPropsType => ({
   // initialized: getInitialized(state),
+  isFetching: state.isFetching,
   categories: state.categories,
   currentCategory: state.currentCategory,
   currentPrice: state.currentPrice,
@@ -187,6 +199,7 @@ export default connect<MapStateToPropsType, MapDispatchToPropsType, {}, AppState
     clearAttributes,
     addProductInCart,
     removeProductFromCart,
+    clearProductCart,
     increaseProductCount,
     decreaseProductCount,
     setTotalSum,
