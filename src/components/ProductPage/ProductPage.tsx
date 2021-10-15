@@ -1,8 +1,9 @@
 import React from 'react'
 import s from './ProductPage.module.css'
 import { currencyConverter } from '../../common/currency-marks/currencyMarks'
+import parse from 'html-react-parser'
 
-export class ProductPage extends React.Component<ProductPagePropsType> {
+export class ProductPage extends React.PureComponent<ProductPagePropsType> {
   state: {
     currentImageIndex: number
     buttonColor: string
@@ -130,7 +131,9 @@ export class ProductPage extends React.Component<ProductPagePropsType> {
             Add to cart
           </button>
           {/*==== Description ====*/}
-          <div className={s.descriptionText} dangerouslySetInnerHTML={{__html: product?.description || ''}}/>
+          <div className={s.descriptionText}>
+            {parse(product?.description || '')}
+          </div>
         </div>
       </div>
     )

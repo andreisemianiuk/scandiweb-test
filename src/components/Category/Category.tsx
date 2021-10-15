@@ -3,15 +3,17 @@ import s from './Category.module.css'
 import { NavLink } from 'react-router-dom'
 import { currencyConverter } from '../../common/currency-marks/currencyMarks'
 
-export class Category extends React.PureComponent<CategoryPropsType> {
+export class Category extends React.PureComponent<{ categories: ICategory[], current: number, price: string, setCurrentID: (id: string) => void }> {
   render() {
-    const {categories, current, price,setCurrentID} = this.props
-    
+    const {categories, current, price, setCurrentID} = this.props
+    let arrOfProducts = categories.some((_, i) => current === i)
+      ? categories.filter((_, i) => i === current)
+      : categories
     return (
       <div className={s.container}>
-        <h2 className={s.title}>{categories.length && categories[current].name}</h2>
+        <h2 className={s.title}>{categories.length && current !== 2 ? categories[current]?.name : 'All'}</h2>
         <div className={s.products}>
-          {categories.length && categories[current].products.map((v: IProduct) =>
+          {arrOfProducts.length && arrOfProducts.map(cat => cat.products.map((v: IProduct) =>
             (<NavLink to={`product_description`} className={s.productLink} onClick={() => setCurrentID(v.id)}>
               <div className={`${s.productCard} ${!v.inStock && s.out}`}>
                 <div className={s.imageWrapper}>
@@ -22,11 +24,11 @@ export class Category extends React.PureComponent<CategoryPropsType> {
                   <div className={s.name}>{v.name}</div>
                   <div className={s.price}>
                     {currencyConverter(price)}
-                    {v.prices && v.prices[0].amount}
+                    {v.prices && v.prices.find(v => v.currency === price)?.amount}
                   </div>
                 </div>
               </div>
-            </NavLink>))
+            </NavLink>)))
           }
         </div>
       </div>

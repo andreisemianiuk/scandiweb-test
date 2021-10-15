@@ -19,7 +19,7 @@ export class Header extends React.PureComponent<HeaderPropsType> {
   }
   
   render() {
-    const {categories,currentCategory,isOpenCurrencies,productCart,currentPrice,handleClickModal} = this.props
+    const {categories, currentCategory, isOpenCurrencies, productCart, currentPrice, handleClickModal} = this.props
     return (
       <header className={s.header}>
         {/*==== Navigation ====*/}
@@ -36,6 +36,14 @@ export class Header extends React.PureComponent<HeaderPropsType> {
                 </li>
               </NavLink>)
             }
+            <NavLink to={''} className={s.navLink}>
+              <li
+                className={`${s.navItem} ${2 === currentCategory ? s.active : null}`}
+                onClick={() => this.handleNav(2)}
+              >
+                All
+              </li>
+            </NavLink>
           </ul>
         </nav>
         {/*==== Logo ====*/}

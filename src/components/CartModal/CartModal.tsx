@@ -3,7 +3,7 @@ import styles from './CartModal.module.css'
 import { RouteComponentProps, withRouter } from 'react-router-dom'
 import CartProducts from '../CartPage/CartProducts'
 
-class CartModal extends React.Component<CartModalPropsType & RouteComponentProps<any, any, unknown>> {
+class CartModal extends React.PureComponent<CartModalPropsType & RouteComponentProps<any, any, unknown>> {
   private readonly wrapperRef: React.RefObject<any>
   
   constructor(props: CartModalPropsType & RouteComponentProps<any, any, unknown>) {

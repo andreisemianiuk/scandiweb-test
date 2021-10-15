@@ -26,7 +26,7 @@ import CartPage from './components/CartPage/CartPage'
 import CartModal from './components/CartModal/CartModal'
 import { Preloader } from './common/preloader/Preloader'
 
-class App extends React.Component<AppPropsType> {
+class App extends React.PureComponent<AppPropsType> {
   state: {
     showModal: boolean
   }
@@ -111,7 +111,12 @@ class App extends React.Component<AppPropsType> {
                   path={`/product_description`}
                   render={() =>
                     <ProductPage
-                      product={categories[currentCategory]?.products.find((v: IProduct) => v.id === currentProductID)}
+                      product={currentCategory !== 2
+                        ? categories[currentCategory]?.products.find((v: IProduct) => v.id === currentProductID)
+                        : categories.filter((cat) =>
+                          cat.products?.find((v: IProduct) => v.id === currentProductID))[0]
+                          .products?.find((v: IProduct) => v.id === currentProductID)
+                      }
                       productCart={productCart}
                       price={currentPrice}
                       attributes={attributes}

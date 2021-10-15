@@ -53,11 +53,13 @@ class CartProducts extends React.PureComponent<CartPropsType> {
     if (count > 1) {
       this.props.decCount(i)
       this.props.setTotalSum()
+    } else {
+      this.props.deleteItem(i)
     }
   }
   
   render() {
-    const {products, price, deleteItem, categories, styles} = this.props
+    const {products, price, categories, styles} = this.props
     return (
       <>
         {products.map((item, index) =>
@@ -103,9 +105,6 @@ class CartProducts extends React.PureComponent<CartPropsType> {
                   <img className={styles.image} src={item.gallery[this.state.currentImages[index]]} alt={''}/>
                   <span className={styles.leftArrow} onClick={() => this.handleLeft(index)}/>
                   <span className={styles.rightArrow} onClick={() => this.handleRight(index)}/>
-                </div>
-                <div className={styles.deleteItem}>
-                  <button className={styles.deleteBtn} onClick={() => deleteItem(index)}>delete</button>
                 </div>
               </div>
             
